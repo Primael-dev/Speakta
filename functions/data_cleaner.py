@@ -1,3 +1,4 @@
+#importation des modules nécessaires
 from manage import load_books
 import re
 
@@ -33,12 +34,7 @@ def handle_missing_values(books):
     
     for book in books:
         try:
-            # ANCIENNE CONDITION DE SUPPRESSION (RETIRÉE) :
-            # if 'price' not in book or book['price'] == 0.0 or book['price'] is None:
-            #     continue 
             
-            # Note: Le prix est déjà à 0.0 si manquant grâce à fix_formats (étape précédente).
-            # Si le prix est manquant (pas de clé), on le met à 0.0 pour le rendre gérable.
             if 'price' not in book:
                  book['price'] = 0.0
             
@@ -184,10 +180,10 @@ def clean_data(books):
         # Étape 1 : nettoyer les espaces
         books = clean_whitespace(books)
         
-        # Étape 2 : CORRIGER LES FORMATS
+        # Étape 2 : corriger les formats
         books = fix_formats(books)
         
-        # Étape 3 : GÉRER LES VALEURS MANQUANTES
+        # Étape 3 : gerer les valeurs manquantes
         books = handle_missing_values(books)
         
         # Étape 4 : enlever les doublons
