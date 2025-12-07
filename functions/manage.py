@@ -14,23 +14,27 @@ def load_books():
 
     if not csv_file.exists():
         print(f"File : {csv_file} not found.")
-        return pd.DataFrame()
+        return []
     
     try:
         #lecture du contenu du fichier 'books.csv'
         data_csv=pd.read_csv(csv_file,encoding='utf-8')
 
-        return data_csv
-    
+        #conversion des données en une liste de dictionnaires
+        books=data_csv.to_dict(orient='records')
+
+        print("Fichier CSV chargé avec succès.")
+        return books
+
     #capture des erreurs fichier introuvable et erreurs de decodage
     except (FileNotFoundError,pd.errors.EmptyDataError,IOError) as e:
         print(f"Erreur lors de la lecture du fichier CSV: {e}")
-        return pd.DataFrame()
+        return []
     
     #autres erreurs inattendues
     except Exception as e:
         print(f"Une erreur inattendue s'est produite: {e}")
-        return pd.DataFrame()
+        return []
     
 
     
