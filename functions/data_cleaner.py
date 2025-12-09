@@ -1,6 +1,6 @@
 #importation des modules nécessaires
-from manage import load_books
 import re
+import pandas as pd
 
 #fonction pour nettoyer les espaces blancs dans les données des livres
 def clean_whitespace(books):
@@ -50,9 +50,11 @@ def handle_missing_values(books):
             
         except KeyError as e:
             print(f"Key Error : {e}")
+            cleaned_books.append(book)
 
         except Exception as e:
             print(f"unmissed values : {e}")
+            cleaned_books.append(book)
     
     return cleaned_books
 
@@ -180,21 +182,20 @@ def clean_data(books):
         # Étape 1 : nettoyer les espaces
         books = clean_whitespace(books)
         
-        # Étape 2 : corriger les formats
-        books = fix_formats(books)
-        
-        # Étape 3 : gerer les valeurs manquantes
+        # Étape 2 : gerer les valeurs manquantes
         books = handle_missing_values(books)
+        
+        # Étape 3 : corriger les formats
+        books = fix_formats(books)
         
         # Étape 4 : enlever les doublons
         books = remove_duplicates(books)
         
-        return books
+        # Étape finale : transformation en DataFrame pandas pour vérification
+        df_books = pd.DataFrame(books)
+        return df_books
         
     except Exception as e:
         print(f"\nError during the cleaning : {e}")
         return []
     
-books = load_books()
-cleaned_books = clean_data(books)
-print(cleaned_books)
