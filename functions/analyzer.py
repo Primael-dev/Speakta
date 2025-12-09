@@ -1,6 +1,6 @@
 #importat des bibliothèques nécessaires
-from data_cleaner import clean_data
-from manage import load_books
+from .data_cleaner import clean_data
+from .manage import load_books
 import pandas as pd
 import io 
 import sys
@@ -224,20 +224,3 @@ def analyze_data(books):
         return {}
 
 
-# Test de la fonction si le fichier est exécuté directement
-if __name__ == "__main__":
-    # Charger et nettoyer les données
-    print("Chargement des données...")
-    books = load_books()
-    
-    print("\nNettoyage des données...")
-    books_cleaned = clean_data(books)
-    
-    # Analyser
-    print("\nAnalyse des données...")
-    results = analyze_data(books_cleaned)
-    
-    if results:
-        print("\nAnalyse terminée avec succès !")
-    else:
-        print("\nÉchec de l'analyse")
