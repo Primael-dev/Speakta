@@ -53,7 +53,7 @@ Une fois l'installation terminée et l'environnement activé, lancez le script e
 ```bash
 python app.py 
 ``` 
-pour le test de l'Api avec Postman (recommandé)
+pour le test :
 
 ```bash
 pytest 
