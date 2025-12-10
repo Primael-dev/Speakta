@@ -12,6 +12,7 @@ def clean_whitespace(books):
     
     for book in books:
         try:
+            # Utilisation d'une compréhension de dictionnaire pour appliquer strip() à toutes les valeurs de type str
             cleaned_book = {
                 k: (v.strip() if isinstance(v, str) else v) 
                 for k, v in book.items()
@@ -35,8 +36,8 @@ def handle_missing_values(books):
     for book in books:
         try:
             
-            if 'price' not in book:
-                 book['price'] = 0.0
+            if 'price' not in book or book.get('price') is None:
+                book['price'] = 0.0
             
             # Remplacer rating manquant par 0
             if not book.get('rating'):
@@ -100,7 +101,7 @@ def fix_formats(books):
             if isinstance(rating, str):
                 # retrait de ' stars' 
                 cleaned_rating = rating.lower().replace(' stars', '').strip()
-        
+            
                 if cleaned_rating.capitalize() in rating_map:
                     book['rating'] = rating_map[cleaned_rating.capitalize()]
                 else:
@@ -131,6 +132,7 @@ def fix_formats(books):
                     # essai de conversion directe
                     book['available'] = int(available)
             elif not isinstance(available, int):
+                # Sécurité si le type n'est pas un int
                 book['available'] = 0
                 
         except (ValueError, TypeError, AttributeError) as e:
@@ -151,9 +153,13 @@ def remove_duplicates(books):
     
     for book in books:
         try:
-            # Création de clé unique titre+prix
-            title = book.get('title', '')
-            price = book.get('price', 0)
+
+            title_raw = book.get('title', '')
+            title = title_raw.strip() if isinstance(title_raw, str) else title_raw
+            
+            price_raw = book.get('price', 0)
+            price = price_raw.strip() if isinstance(price_raw, str) else price_raw
+            
             key = (title, price)
             
             if key not in seen:
@@ -162,7 +168,7 @@ def remove_duplicates(books):
                 
         except (TypeError, AttributeError) as e:
             print(f"Error : {e}")
-            # On garde le livre quand même
+            # On garde le livre quand même si la création de clé échoue
             unique_books.append(book)
     
     return unique_books
@@ -198,4 +204,3 @@ def clean_data(books):
     except Exception as e:
         print(f"\nError during the cleaning : {e}")
         return []
-    
